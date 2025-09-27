@@ -16,30 +16,63 @@ import com.icytower.interfaces.GameState;
 import com.icytower.systems.ParticleSystem;
 
 public class PlayingState implements GameState {
-
     private World world;
     private Player player;
     private Camera camera;
     
-        @Override
-    public void enter() {
-        world = new World();
-        player = new Player(400, 520); // Start on the first platform
-        camera = new Camera();
-        
-        InputManager input = InputManager.getInstance();
-        input.clearBindings();
-        input.bindKey(KeyEvent.VK_SPACE, new JumpCommand(player));
-        input.bindKey(KeyEvent.VK_ESCAPE, new PauseCommand());
-        
-        ScoreManager.getInstance().resetScore();
-    }
-    
+
     @Override
     public void exit() {
         // Cleanup if needed
     }
     
+    @Override
+    public void enter() {
+        world = new World();
+        player = new Player(400, 520);
+        camera = new Camera();
+        
+        InputManager input = InputManager.getInstance();
+        input.clearBindings();
+        
+        input.bindKey(KeyEvent.VK_ESCAPE, new PauseCommand(GameManager.getInstance()));
+        input.bindKey(KeyEvent.VK_P, new PauseCommand(GameManager.getInstance()));
+        
+        ScoreManager.getInstance().resetScore();
+    }
+    
+    @Override
+    public void render(Renderer renderer) {
+        float layer1Factor = 0.3f; 
+        float layer2Factor = 0.3f;  
+        renderer.drawBackground( camera.getX() * layer1Factor, camera.getY() * layer1Factor, 800, 600); 
+        renderer.drawBackground( camera.getX() * layer2Factor, camera.getY() * layer2Factor, 800, 600);
+        
+        renderer.translate(camera.getX(), camera.getY());
+        world.render(renderer);
+        player.render(renderer);
+        
+        // Render particle effects       
+        ParticleSystem.getInstance().render(renderer, camera.getX(), camera.getY());
+        
+        renderer.translate(-camera.getX(), -camera.getY());
+        
+        // Draw UI
+        renderer.setColor(Color.BLACK);
+        renderer.setFont(new Font("Arial", Font.BOLD, 20));
+        renderer.drawString("Score: " + ScoreManager.getInstance().getCurrentScore(), 10, 30);
+        renderer.drawString("Height: " + Math.max(0, (int)(600 - player.getY()) / 10), 10, 55);
+        
+        // Debug info
+        renderer.setColor(Color.DARK_GRAY);
+        renderer.setFont(new Font("Arial", Font.PLAIN, 12));
+        renderer.drawString("Particles: " + ParticleSystem.getInstance().getParticleCount(), 10, 580);
+    }
+    
+    @Override
+    public void handleInput(InputManager inputManager) {
+        // Input is handled through commands
+    }
     @Override
 public void update() {
     world.update(player);      
@@ -62,42 +95,6 @@ public void update() {
         GameManager.getInstance().setState("GAME_OVER");
     }
 }
-
-    
-    @Override
-    public void render(Renderer renderer) {
-        float layer1Factor = 0.3f;
-float layer2Factor = 0.3f; 
-renderer.drawBackground( camera.getX() * layer1Factor, camera.getY() * layer1Factor, 800, 600);
-renderer.drawBackground( camera.getX() * layer2Factor, camera.getY() * layer2Factor, 800, 600);
-  
-        renderer.translate(camera.getX(), camera.getY());
-        world.render(renderer);
-        player.render(renderer);
-        
-        // Render particle effects
-       ParticleSystem.getInstance().render(renderer, camera.getX(), camera.getY());
-
-        
-        renderer.translate(-camera.getX(), -camera.getY());
-        
-        // Draw UI
-        renderer.setColor(Color.BLACK);
-        renderer.setFont(new Font("Arial", Font.BOLD, 20));
-        renderer.drawString("Score: " + ScoreManager.getInstance().getCurrentScore(), 10, 30);
-        renderer.drawString("Height: " + Math.max(0, (int)(600 - player.getY()) / 10), 10, 55);
-        
-        // Debug info
-        renderer.setColor(Color.DARK_GRAY);
-        renderer.setFont(new Font("Arial", Font.PLAIN, 12));
-        renderer.drawString("Particles: " + ParticleSystem.getInstance().getParticleCount(), 10, 580);
-    }
-    
-    @Override
-    public void handleInput(InputManager inputManager) {
-        // Input is handled through commands
-    }
-    
     public Player getPlayer() { return player; }
     public World getWorld() { return world; }
 }

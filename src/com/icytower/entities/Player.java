@@ -108,7 +108,25 @@ public class Player extends GameObject {
     public void setMovementStrategy(MovementStrategy strategy) {
         this.movementStrategy = strategy;
     }
+     public void moveLeft() {
+        velocityX = -5f; 
+    }
     
+    public void moveRight() {
+        velocityX = 5f;
+    }
+    
+    public void stopMoving() {
+        velocityX = 0f;
+    }
+   
+    public void setVelocityX(float velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public float getVelocityX() {
+        return velocityX;
+    }
     public boolean isOnGround() { return onGround; }
     public void setOnGround(boolean onGround) { this.onGround = onGround; }
     public PlayerState getPlayerState() { return playerState; }

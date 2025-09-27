@@ -1,33 +1,51 @@
-// Default Movement Strategy
 package com.icytower.strategies;
 
 import com.icytower.interfaces.MovementStrategy;
-import com.icytower.systems.InputManager;
 import com.icytower.core.GameObject;
+import com.icytower.entities.Player;
+import com.icytower.systems.InputManager;
 import java.awt.event.KeyEvent;
 
 public class DefaultMovementStrategy implements MovementStrategy {
-    private static final float MOVE_SPEED = 5f;
-    private static final float FRICTION = 0.8f;
-    private static final float MAX_SPEED = 8f;
-
+    
+    private boolean wasSpacePressed = false;
+    
     @Override
-    public void move(GameObject object, InputManager inputManager) {
-        // Move left
-        if (inputManager.isKeyPressed(KeyEvent.VK_LEFT) || inputManager.isKeyPressed(KeyEvent.VK_A)) {
-            object.setVelocityX(object.getVelocityX() - MOVE_SPEED * 0.3f);
+    public void move(GameObject gameObject, InputManager input) {
+        // Cast to Player to access player-specific methods
+        if (!(gameObject instanceof Player)) {
+            return; // Only handle Player objects
         }
-
-        // Move right
-        if (inputManager.isKeyPressed(KeyEvent.VK_RIGHT) || inputManager.isKeyPressed(KeyEvent.VK_D)) {
-            object.setVelocityX(object.getVelocityX() + MOVE_SPEED * 0.3f);
+        
+        Player player = (Player) gameObject;
+        
+        float horizontalSpeed = 0f;
+        
+    
+        if (input.isKeyDown(KeyEvent.VK_LEFT) || input.isKeyDown(KeyEvent.VK_A)) {
+            horizontalSpeed -= 5f;
         }
-
-        // Apply friction
-        object.setVelocityX(object.getVelocityX() * FRICTION);
-
-        // Limit speed
-        if (object.getVelocityX() > MAX_SPEED) object.setVelocityX(MAX_SPEED);
-        if (object.getVelocityX() < -MAX_SPEED) object.setVelocityX(-MAX_SPEED);
+        
+        if (input.isKeyDown(KeyEvent.VK_RIGHT) || input.isKeyDown(KeyEvent.VK_D)) {
+            horizontalSpeed += 5f;
+        }
+        
+        player.setVelocityX(horizontalSpeed);
+        
+       
+        boolean spaceCurrentlyPressed = input.isKeyDown(KeyEvent.VK_SPACE);
+        
+        if (spaceCurrentlyPressed && !wasSpacePressed) {
+            player.jump();
+        }
+        
+        wasSpacePressed = spaceCurrentlyPressed;
+        
+        
+        if (input.isKeyDown(KeyEvent.VK_UP) || input.isKeyDown(KeyEvent.VK_W)) {
+            if (player.isOnGround()) {
+                player.jump();
+            }
+        }
     }
 }

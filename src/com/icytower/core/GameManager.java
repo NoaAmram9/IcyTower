@@ -1,4 +1,5 @@
 package com.icytower.core;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -21,6 +22,7 @@ public class GameManager {
     private List<GameObserver> observers;
     private GameState currentState;
     private Map<String, GameState> states;
+    private boolean isPaused = false; 
     
     private GameManager() {
         observers = new ArrayList<>();
@@ -51,6 +53,18 @@ public class GameManager {
             currentState = newState;
             currentState.enter();
         }
+    }
+    
+
+    public void togglePause() {
+        if (currentState == states.get("PLAYING")) {
+            setState("PAUSED");
+        } else if (currentState == states.get("PAUSED")) {
+            setState("PLAYING");
+        }
+    }
+    public boolean isPaused() {
+        return isPaused;
     }
     
     public GameState getCurrentState() {
