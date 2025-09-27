@@ -63,7 +63,7 @@ public class World {
         removeOldPlatforms(player);
     }
     
- private void checkCollisions(Player player) {
+private void checkCollisions(Player player) {
     player.setOnGround(false);
 
     for (GameObject obj : gameObjects) {
@@ -79,7 +79,7 @@ public class World {
             if (landedOnTop) {
                 // Player lands on the platform
                 player.landOn(platform.getY());
-                SoundManager.getInstance().playSound("land");
+               
 
                 // Handle platform type
                 switch (platform.getType()) {
@@ -103,6 +103,7 @@ public class World {
                 platform.hasPlayerSteppedOn() && !platform.isBroken()) {
 
                 platform.breakPlatform();
+               
                 ParticleSystem.getInstance()
                     .createIceBreakEffect(platform.getX(), platform.getY(), platform.getWidth());
             }

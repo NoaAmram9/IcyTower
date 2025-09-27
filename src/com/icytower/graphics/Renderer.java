@@ -3,6 +3,7 @@ package com.icytower.graphics;
 import java.awt.GradientPaint;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -36,6 +37,10 @@ public class Renderer {
     public void drawString(String text, int x, int y) {
         g2d.drawString(text, x, y);
     }
+    public void drawImage(BufferedImage img, int x, int y, int w, int h) {
+    g2d.drawImage(img, x, y, w, h, null);
+    }
+
     /**
      * @param cameraX 
      * @param cameraY 
