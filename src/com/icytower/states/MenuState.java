@@ -123,7 +123,7 @@ public class MenuState implements GameState {
     
     private void drawGlowingTitle(Graphics2D g2d) {
         String title = "ICY TOWER";
-        Font titleFont = new Font("Segoe UI Semibold Black", Font.BOLD, (int)(54 * titlePulse));
+        Font titleFont = new Font("Segoe UI Semibold Black", Font.BOLD, (int)(60 * titlePulse));
         g2d.setFont(titleFont);
         
         int titleWidth = g2d.getFontMetrics().stringWidth(title);

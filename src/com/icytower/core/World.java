@@ -33,8 +33,8 @@ public class World {
     private void generateInitialPlatforms() {
     gameObjects.add(new Platform(0, WINDOW_HEIGHT - 20, WINDOW_WIDTH, 20, PlatformType.NORMAL));
 
-    float minGap = 60;
-    float maxGap = 80;
+    float minGap = 50;
+    float maxGap = 70;
     int yPos = WINDOW_HEIGHT - 100;
 
     for (int i = 1; i <= 50; i++) {
@@ -122,8 +122,8 @@ private void checkCollisions(Player player) {
                 .min()
                 .orElse(0);
 
-            float minGap = 60;
-            float maxGap = 80;
+            float minGap = 50;
+            float maxGap = 70;
             int yPos = highestY;
 
             for (int i = 0; i < 10; i++) {

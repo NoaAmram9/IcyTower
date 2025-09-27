@@ -13,7 +13,7 @@ public class PlatformFactory implements GameObjectFactory {
     public GameObject create(float x, float y) {
         float width = 120 + random.nextInt(180);
         PlatformType type = getRandomPlatformType();
-        return new Platform(x, y, width, 15, type);
+        return new Platform(x, y, width, 20, type);
     }
     
     private PlatformType getRandomPlatformType() {

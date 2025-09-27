@@ -16,7 +16,7 @@ import com.icytower.systems.InputManager;
 public class IcyTowerGame extends JFrame {
     
     //  Settings
-    private static final String GAME_TITLE = "Icy Tower - Advanced OOP with Design Patterns";
+    private static final String GAME_TITLE = "Icy Tower - Advanced OOP with Design Patterns - Created by NOA";
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
     private static final boolean WINDOW_RESIZABLE = false;
@@ -43,7 +43,12 @@ public class IcyTowerGame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(WINDOW_RESIZABLE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        
+        try {
+        Image icon = Toolkit.getDefaultToolkit().getImage("resources/images/icon.png");
+        setIconImage(icon);
+       } catch (Exception e) {
+        System.out.println("Could not load window icon: " + e.getMessage());
+       }
         // Center the window on the screen
         setLocationRelativeTo(null);
         
