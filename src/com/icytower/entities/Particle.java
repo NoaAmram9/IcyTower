@@ -97,76 +97,58 @@ public class Particle {
         }
     }
     
-    public void render(Renderer renderer) {
-        if (!isAlive()) return;
-        
-        float alpha = Math.max(0, Math.min(1, life / maxLife));
-        int alphaValue = (int)(alpha * 255);
-        
-        // Ensure alpha is valid
-        if (alphaValue <= 0) return;
-        
-        Color fadedColor = new Color(
-            color.getRed(), 
-            color.getGreen(), 
-            color.getBlue(), 
-            alphaValue
-        );
-        
-        renderer.setColor(fadedColor);
-        
-        int renderSize = Math.max(1, (int)size);
-        int renderX = (int)(x - size / 2);
-        int renderY = (int)(y - size / 2);
-        
-        // Render based on particle type
-        switch (type) {
-            case SNOW:
-                // Render as a small circle with white center
-                renderer.fillOval(renderX, renderY, renderSize, renderSize);
-                renderer.setColor(Color.WHITE);
-                renderer.fillOval(renderX + 1, renderY + 1, Math.max(1, renderSize - 2), Math.max(1, renderSize - 2));
-                break;
-                
-            case SPARK:
-                // Render as a bright glowing particle
-                renderer.fillOval(renderX, renderY, renderSize, renderSize);
-                // Add glow effect
-                Color glowColor = new Color(
-                    Math.min(255, color.getRed() + 50),
-                    Math.min(255, color.getGreen() + 50),
-                    Math.min(255, color.getBlue() + 50),
-                    alphaValue / 3
-                );
-                renderer.setColor(glowColor);
-                renderer.fillOval(renderX - 1, renderY - 1, renderSize + 2, renderSize + 2);
-                break;
-                
-            case DUST:
-                // Render as a small square
-                renderer.fillRect(renderX, renderY, renderSize, renderSize);
-                break;
-                
-            case SMOKE:
-                // Render as a soft circle with gradient
-                renderer.fillOval(renderX, renderY, renderSize, renderSize);
-                // Add soft edge
-                Color softerColor = new Color(
-                    color.getRed(),
-                    color.getGreen(),
-                    color.getBlue(),
-                    alphaValue / 2
-                );
-                renderer.setColor(softerColor);
-                renderer.fillOval(renderX - 1, renderY - 1, renderSize + 2, renderSize + 2);
-                break;
-                
-            default:
-                // Normal circular particle
-                renderer.fillOval(renderX, renderY, renderSize, renderSize);
-                break;
-        }
+    public void render(Renderer renderer, float cameraX, float cameraY) {
+    if (!isAlive()) return;
+
+    float alpha = Math.max(0, Math.min(1, life / maxLife));
+    int alphaValue = (int)(alpha * 255);
+    if (alphaValue <= 0) return;
+
+    Color fadedColor = new Color(
+        color.getRed(),
+        color.getGreen(),
+        color.getBlue(),
+        alphaValue
+    );
+
+    renderer.setColor(fadedColor);
+
+    int renderSize = Math.max(1, (int)size);
+    int renderX = (int)(x - size / 2 - cameraX);
+    int renderY = (int)(y - size / 2 - cameraY);
+
+    switch (type) {
+        case SNOW:
+            renderer.fillOval(renderX, renderY, renderSize, renderSize);
+            renderer.setColor(Color.WHITE);
+            renderer.fillOval(renderX + 1, renderY + 1, Math.max(1, renderSize - 2), Math.max(1, renderSize - 2));
+            break;
+        case SPARK:
+            renderer.fillOval(renderX, renderY, renderSize, renderSize);
+            Color glowColor = new Color(
+                Math.min(255, color.getRed() + 50),
+                Math.min(255, color.getGreen() + 50),
+                Math.min(255, color.getBlue() + 50),
+                alphaValue / 3
+            );
+            renderer.setColor(glowColor);
+            renderer.fillOval(renderX - 1, renderY - 1, renderSize + 2, renderSize + 2);
+            break;
+        case DUST:
+            renderer.fillRect(renderX, renderY, renderSize, renderSize);
+            break;
+        case SMOKE:
+            renderer.fillOval(renderX, renderY, renderSize, renderSize);
+            Color softerColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), alphaValue / 2);
+            renderer.setColor(softerColor);
+            renderer.fillOval(renderX - 1, renderY - 1, renderSize + 2, renderSize + 2);
+            break;
+        default:
+            renderer.fillOval(renderX, renderY, renderSize, renderSize);
+            break;
     }
+}
+
     
     public boolean isAlive() {
         return life > 0;

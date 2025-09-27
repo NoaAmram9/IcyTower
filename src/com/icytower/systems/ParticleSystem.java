@@ -41,11 +41,12 @@ public class ParticleSystem {
         }
     }
     
-    public void render(Renderer renderer) {
-        for (Particle particle : particles) {
-            particle.render(renderer);
-        }
+    public void render(Renderer renderer, float cameraX, float cameraY) {
+    for (Particle p : particles) {
+        p.render(renderer, cameraX, cameraY);
     }
+}
+
     
     // Create landing effect when player touches platform
     public void createLandingEffect(float x, float y) {

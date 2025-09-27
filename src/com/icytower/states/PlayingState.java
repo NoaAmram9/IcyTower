@@ -66,14 +66,16 @@ public void update() {
     
     @Override
     public void render(Renderer renderer) {
-        renderer.drawGradientBackground(800, 600);
+      renderer.drawBackground(camera.getX(), camera.getY(), 800, 600);
+
         
         renderer.translate(camera.getX(), camera.getY());
         world.render(renderer);
         player.render(renderer);
         
         // Render particle effects
-        ParticleSystem.getInstance().render(renderer);
+       ParticleSystem.getInstance().render(renderer, camera.getX(), camera.getY());
+
         
         renderer.translate(-camera.getX(), -camera.getY());
         
