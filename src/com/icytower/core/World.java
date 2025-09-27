@@ -13,7 +13,7 @@ import com.icytower.strategies.DefaultMovementStrategy;
 import com.icytower.strategies.IceMovementStrategy;
 import com.icytower.graphics.Renderer;
 import com.icytower.systems.SoundManager;
-
+import com.icytower.systems.ParticleSystem;
 
 
 public class World {
@@ -63,30 +63,56 @@ public class World {
         removeOldPlatforms(player);
     }
     
-   private void checkCollisions(Player player) {
-        player.setOnGround(false);
-        
-        for (GameObject obj : gameObjects) {
-            if (obj instanceof Platform && player.intersects(obj) && player.getVelocityY() >= 0) {
-                Platform platform = (Platform) obj;
-            
-                if (player.getY() + player.getHeight() <= platform.getY() + 20) { 
-                    player.landOn(platform.getY());
-                    
-                    // Apply platform-specific effects
-                    if (platform.getType() == PlatformType.ICE) {
+ private void checkCollisions(Player player) {
+    player.setOnGround(false);
+
+    for (GameObject obj : gameObjects) {
+        if (!(obj instanceof Platform)) continue;
+        Platform platform = (Platform) obj;
+
+        // Only check collision if player is falling (velocityY >= 0)
+        if (player.intersects(platform) && player.getVelocityY() >= 0) {
+
+            // Check if player is above the platform
+            boolean landedOnTop = player.getY() + player.getHeight() <= platform.getY() + 10;
+
+            if (landedOnTop) {
+                // Player lands on the platform
+                player.landOn(platform.getY());
+                SoundManager.getInstance().playSound("land");
+
+                // Handle platform type
+                switch (platform.getType()) {
+                    case ICE:
                         player.setMovementStrategy(new IceMovementStrategy());
-                    } else {
+                        break;
+
+                    case BREAKABLE:
                         player.setMovementStrategy(new DefaultMovementStrategy());
-                    }
-                    
-                    SoundManager.getInstance().playSound("land");
-                    break;
+                        platform.setPlayerSteppedOn(true);
+                        break;
+
+                    default:
+                        player.setMovementStrategy(new DefaultMovementStrategy());
+                        break;
                 }
+            }
+        } else {
+            // Player is no longer touching the platform, handle BREAKABLE case
+            if (platform.getType() == PlatformType.BREAKABLE &&
+                platform.hasPlayerSteppedOn() && !platform.isBroken()) {
+
+                platform.breakPlatform();
+                ParticleSystem.getInstance()
+                    .createIceBreakEffect(platform.getX(), platform.getY(), platform.getWidth());
             }
         }
     }
-    
+
+    // Remove broken platforms from the game
+    gameObjects.removeIf(obj -> obj instanceof Platform && ((Platform) obj).isBroken());
+}
+
         private void generateNewPlatforms() {
         if (gameObjects.size() < 100) {
             int highestY = gameObjects.stream()
@@ -109,9 +135,9 @@ public class World {
         }
     }
     
-    private void removeOldPlatforms(Player player) {
-        gameObjects.removeIf(obj -> obj.getY() > player.getY() + 700);
-    }
+ private void removeOldPlatforms(Player player) {
+  gameObjects.removeIf(obj -> (obj instanceof Platform) && ((Platform)obj).isBroken());
+}
     
     public void render(Renderer renderer) {
         for (GameObject obj : gameObjects) {

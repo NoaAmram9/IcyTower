@@ -66,9 +66,11 @@ public void update() {
     
     @Override
     public void render(Renderer renderer) {
-      renderer.drawBackground(camera.getX(), camera.getY(), 800, 600);
-
-        
+        float layer1Factor = 0.3f;
+float layer2Factor = 0.3f; 
+renderer.drawBackground( camera.getX() * layer1Factor, camera.getY() * layer1Factor, 800, 600);
+renderer.drawBackground( camera.getX() * layer2Factor, camera.getY() * layer2Factor, 800, 600);
+  
         renderer.translate(camera.getX(), camera.getY());
         world.render(renderer);
         player.render(renderer);

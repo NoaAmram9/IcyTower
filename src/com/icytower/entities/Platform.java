@@ -5,20 +5,47 @@ import java.awt.geom.Rectangle2D;
 import com.icytower.core.GameObject;
 import com.icytower.graphics.Renderer;
 import com.icytower.enums.PlatformType;
-
+import com.icytower.systems.ParticleSystem;
 public class Platform extends GameObject {
     private PlatformType type;
-    
+     private boolean broken = false;
+private boolean playerHasSteppedOn = false;
+
+
+
+
     public Platform(float x, float y, float width, float height, PlatformType type) {
         super(x, y, width, height);
         this.type = type;
         this.color = type.getColor();
     }
     
-    @Override
-    public void update(float deltaTime) {
-        // Platforms are static, no update needed
-    }
+   
+        @Override
+        public void update(float deltaTime) {
+           if (broken) return;
+        }
+
+        public void breakPlatform() {
+            if (!broken) {
+                broken = true;
+                ParticleSystem.getInstance().createIceBreakEffect(x, y, width);
+            }
+        }
+
+        public boolean isBroken() {
+            return broken;
+        }
+
+// Platform.java
+public boolean hasPlayerSteppedOn() {
+    return playerHasSteppedOn;
+}
+
+public void setPlayerSteppedOn(boolean steppedOn) {
+    this.playerHasSteppedOn = steppedOn;
+}
+
     
     @Override
     public void render(Renderer renderer) {
@@ -41,4 +68,5 @@ public class Platform extends GameObject {
     }
     
     public PlatformType getType() { return type; }
+    
 }

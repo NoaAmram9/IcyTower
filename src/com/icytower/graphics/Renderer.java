@@ -18,7 +18,7 @@ public class Renderer {
     public Renderer(Graphics2D g2d) {
         this.g2d = g2d;
         
-        backgroundImage = Toolkit.getDefaultToolkit().getImage("resources/background.png");
+        backgroundImage = Toolkit.getDefaultToolkit().getImage("resources/images/background.png");
     }
   
     public void setColor(Color color) {
