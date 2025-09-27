@@ -2,6 +2,9 @@
 package com.icytower.entities;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.awt.Graphics2D;
+import java.awt.GradientPaint;
+import java.awt.BasicStroke;
 import com.icytower.core.GameObject;
 import com.icytower.graphics.Renderer;
 import com.icytower.core.GameManager;
@@ -67,23 +70,70 @@ public class Player extends GameObject {
         }
     }
     
-    @Override
-    public void render(Renderer renderer) {
-        renderer.setColor(color);
-        renderer.fillRoundRect((int)x, (int)y, (int)width, (int)height, 10, 10);
-        
-        // Draw eyes
-        renderer.setColor(Color.BLACK);
-        renderer.fillOval((int)x + 8, (int)y + 10, 4, 4);
-        renderer.fillOval((int)x + 18, (int)y + 10, 4, 4);
-        
-        // Draw mouth based on state
-        if (playerState == PlayerState.JUMPING) {
-            renderer.drawArc((int)x + 10, (int)y + 18, 10, 8, 0, 180);
-        } else {
-            renderer.drawArc((int)x + 10, (int)y + 18, 10, 8, 0, -180);
-        }
+   @Override
+public void render(Renderer renderer) {
+    Graphics2D g2d = renderer.getGraphics2D();
+
+    // Glow effect
+    g2d.setColor(new Color(150, 220, 255, 50));
+    g2d.fillOval((int)x - 5, (int)y - 5, (int)width + 10, (int)height + 10);
+
+    // Body with gradient glass effect
+    Color topColor = new Color(100, 180, 255, 200);
+    Color bottomColor = new Color(50, 130, 255, 200);
+    GradientPaint bodyGradient = new GradientPaint(
+        (int)x, (int)y, topColor,
+        (int)x, (int)(y + height), bottomColor
+    );
+    g2d.setPaint(bodyGradient);
+    g2d.fillRoundRect((int)x, (int)y, (int)width, (int)height, 12, 12);
+
+    // Outline
+    g2d.setStroke(new BasicStroke(2f));
+    g2d.setColor(new Color(255, 255, 255, 100));
+    g2d.drawRoundRect((int)x, (int)y, (int)width, (int)height, 12, 12);
+
+    // Eyes (bigger, expressive)
+    int eyeWidth = 6;
+    int eyeHeight = 6;
+    g2d.setColor(Color.BLACK);
+    g2d.fillOval((int)x + 6, (int)y + 10, eyeWidth, eyeHeight);
+    g2d.fillOval((int)x + 18, (int)y + 10, eyeWidth, eyeHeight);
+
+    // Eye highlight
+    g2d.setColor(Color.WHITE);
+    g2d.fillOval((int)x + 7, (int)y + 11, 2, 2);
+    g2d.fillOval((int)x + 19, (int)y + 11, 2, 2);
+
+    // Mouth expressions based on state
+    int mouthX = (int)x + 10;
+    int mouthY = (int)y + 22;
+    int mouthWidth = 10;
+    int mouthHeight = 6;
+
+    switch (playerState) {
+        // case IDLE, RUNNING:
+        //     g2d.drawLine(mouthX, mouthY + mouthHeight / 2, mouthX + mouthWidth, mouthY + mouthHeight / 2); // neutral
+        //     break;
+        case JUMPING:
+            g2d.drawArc(mouthX, mouthY, mouthWidth, mouthHeight, 0, 180); // excited smile
+            break;
+        case FALLING:
+            // g2d.drawArc(mouthX, mouthY, mouthWidth, mouthHeight, 0, -180); // sad
+             g2d.drawLine(mouthX, mouthY + mouthHeight / 2, mouthX + mouthWidth, mouthY + mouthHeight / 2); // neutral
+            break;
+        // case HAPPY:
+        //     g2d.drawArc(mouthX, mouthY, mouthWidth, mouthHeight, 0, 180);
+        //     break;
+        // case SAD:
+        //     g2d.drawArc(mouthX, mouthY, mouthWidth, mouthHeight, 0, -180);
+        //     break;
+        // case SURPRISED:
+        //     g2d.fillOval(mouthX + 2, mouthY, 6, 6); // round mouth
+        //     break;
     }
+}
+
     
     @Override
     public Rectangle2D.Float getBounds() {
