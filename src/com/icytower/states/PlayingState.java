@@ -59,13 +59,13 @@ public class PlayingState implements GameState {
         
         // Draw UI
         renderer.setColor(Color.BLACK);
-        renderer.setFont(new Font("Arial", Font.BOLD, 20));
+        renderer.setFont(new Font("Segoe UI Semibold", Font.BOLD, 20));
         renderer.drawString("Score: " + ScoreManager.getInstance().getCurrentScore(), 10, 30);
         renderer.drawString("Height: " + Math.max(0, (int)(600 - player.getY()) / 10), 10, 55);
         
         // Debug info
         renderer.setColor(Color.DARK_GRAY);
-        renderer.setFont(new Font("Arial", Font.PLAIN, 12));
+        renderer.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 12));
         renderer.drawString("Particles: " + ParticleSystem.getInstance().getParticleCount(), 10, 580);
     }
     

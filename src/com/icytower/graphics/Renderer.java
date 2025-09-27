@@ -81,7 +81,9 @@ public class Renderer {
         g2d.fillRect(0, 0, width, height);
         }
     }
-
+public Graphics2D getGraphics2D() {
+    return g2d;
+}
   
     public void setFont(Font font) { g2d.setFont(font); }
   
