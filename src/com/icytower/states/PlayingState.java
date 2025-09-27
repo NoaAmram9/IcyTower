@@ -2,13 +2,13 @@
 package com.icytower.states;
 import com.icytower.graphics.Renderer;
 import com.icytower.systems.InputManager;
-import com.icytower.managers.GameManager;
-import com.icytower.managers.ScoreManager;
+import com.icytower.core.GameManager;
+import com.icytower.systems.ScoreManager;
 import com.icytower.commands.JumpCommand;
 import com.icytower.commands.PauseCommand;
 import com.icytower.entities.Player;
-import com.icytower.entities.World;
-import com.icytower.entities.Camera;
+import com.icytower.core.World;
+import com.icytower.graphics.Camera;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;

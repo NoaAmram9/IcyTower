@@ -1,6 +1,6 @@
 package com.icytower.commands;
 import com.icytower.entities.Player;
-
+import com.icytower.interfaces.Command;
 public class JumpCommand implements Command {
     private Player player;
     

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import com.icytower.core.GameObject;
 import com.icytower.graphics.Renderer;
-import com.icytower.entities.PlatformType;
+import com.icytower.enums.PlatformType;
 
 public class Platform extends GameObject {
     private PlatformType type;

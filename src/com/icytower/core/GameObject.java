@@ -52,4 +52,15 @@ public abstract class GameObject {
     public void setActive(boolean active) {
         this.active = active;
     }
+    public void setVelocityX(float velocityX) {
+    this.velocityX = velocityX;
+    }
+
+    public void setVelocityY(float velocityY) {
+        this.velocityY = velocityY;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }

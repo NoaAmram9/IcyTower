@@ -2,9 +2,9 @@
 package com.icytower.factories;
 import com.icytower.core.GameObject;
 import com.icytower.entities.Platform;
-import com.icytower.entities.PlatformType;
+import com.icytower.enums.PlatformType;
 import java.util.Random;
-import com.icytower.core.GameObjectFactory;
+import com.icytower.interfaces.GameObjectFactory;
 
 public class PlatformFactory implements GameObjectFactory {
     private Random random = new Random();

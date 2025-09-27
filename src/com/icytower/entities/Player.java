@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import com.icytower.core.GameObject;
 import com.icytower.graphics.Renderer;
-import com.icytower.managers.GameManager;
-import com.icytower.managers.SoundManager;
-import com.icytower.managers.InputManager;
-import com.icytower.strategies.MovementStrategy;
+import com.icytower.core.GameManager;
+import com.icytower.systems.SoundManager;
+import com.icytower.systems.InputManager;
+import com.icytower.strategies.IceMovementStrategy;
+import com.icytower.interfaces.MovementStrategy;
 import com.icytower.strategies.DefaultMovementStrategy;
-import com.icytower.states.PlayerState;
+import com.icytower.enums.PlayerState;
 
 public class Player extends GameObject {
     private MovementStrategy movementStrategy;

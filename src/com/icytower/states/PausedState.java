@@ -2,7 +2,7 @@
 package com.icytower.states;
 import com.icytower.graphics.Renderer;
 import com.icytower.systems.InputManager;
-import com.icytower.managers.GameManager;
+import com.icytower.core.GameManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;

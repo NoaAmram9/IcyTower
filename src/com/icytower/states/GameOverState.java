@@ -1,11 +1,11 @@
-// Game Over State Class
 package com.icytower.states;
+
 import com.icytower.interfaces.GameState;
 import com.icytower.core.GameManager;
 import com.icytower.graphics.Renderer;
-import com.icytower.managers.InputManager;
-import com.icytower.managers.SoundManager;
-import com.icytower.managers.ScoreManager;
+import com.icytower.systems.InputManager;
+import com.icytower.systems.SoundManager;
+import com.icytower.systems.ScoreManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
