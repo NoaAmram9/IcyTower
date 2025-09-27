@@ -18,13 +18,13 @@ public class Player extends GameObject {
     private PlayerState playerState;
     private static final float GRAVITY = 0.5f;
     
-    public Player(float x, float y) {
-        super(x, y, 30, 40);
-        this.movementStrategy = new DefaultMovementStrategy();
-        this.onGround = false;
-        this.playerState = PlayerState.IDLE;
-        this.color = new Color(255, 100, 100);
-    }
+   public Player(float x, float y) {
+    super(x, y, 30, 40);
+    this.movementStrategy = new DefaultMovementStrategy();
+    this.onGround = true;  
+    this.playerState = PlayerState.IDLE;
+    this.color = new Color(255, 100, 100);
+}
     
     @Override
     public void update(float deltaTime) {
@@ -32,7 +32,7 @@ public class Player extends GameObject {
         applyGravity();
         updatePosition(deltaTime);
         updateState();
-        
+      
         // Notify observers
         GameManager.getInstance().notifyPlayerPositionChanged(x, y);
     }
@@ -90,13 +90,14 @@ public class Player extends GameObject {
         return new Rectangle2D.Float(x, y, width, height);
     }
     
-    public void jump() {
-        if (onGround) {
-            velocityY = -12f;
-            onGround = false;
-            SoundManager.getInstance().playSound("jump");
-        }
+  public void jump() {
+   
+    if (onGround || Math.abs(velocityY) < 0.1f) {
+        velocityY = -12f;
+        onGround = false;
+        SoundManager.getInstance().playSound("jump");
     }
+}
     
     public void landOn(float platformY) {
         y = platformY - height;
@@ -111,4 +112,5 @@ public class Player extends GameObject {
     public boolean isOnGround() { return onGround; }
     public void setOnGround(boolean onGround) { this.onGround = onGround; }
     public PlayerState getPlayerState() { return playerState; }
+    public void setPlayerState(PlayerState state) { this.playerState = state; }
 }

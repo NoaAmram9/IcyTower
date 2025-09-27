@@ -31,6 +31,7 @@ public class InputManager implements KeyListener {
     
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("Key pressed: " + e.getKeyCode());
         keys[e.getKeyCode()] = true;
         Command command = keyCommands.get(e.getKeyCode());
         if (command != null) {
@@ -45,4 +46,8 @@ public class InputManager implements KeyListener {
     
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    public void clearBindings() {
+    keyCommands.clear();
+    }
 }

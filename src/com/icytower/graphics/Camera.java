@@ -14,7 +14,8 @@ class Camera {
     
     public void update(float playerX, float playerY, int screenHeight) {
         targetX = 0; // Keep camera centered horizontally
-        targetY = Math.min(0, screenHeight / 2 - playerY);
+       targetY = screenHeight / 2 - playerY;
+
         
         // Smooth camera movement
         x += (targetX - x) * LERP_SPEED;

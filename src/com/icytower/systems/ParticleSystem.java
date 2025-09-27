@@ -2,6 +2,7 @@
 package com.icytower.systems;
 import com.icytower.entities.Particle;
 import com.icytower.graphics.Renderer;
+import com.icytower.enums.ParticleType;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,7 +14,6 @@ public class ParticleSystem {
     private static ParticleSystem instance;
     private List<Particle> particles;
     private Random random;
-    
     private ParticleSystem() {
         particles = new ArrayList<>();
         random = new Random();

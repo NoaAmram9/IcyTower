@@ -2,18 +2,11 @@ package com.icytower.entities;
 import java.awt.Color;
 import java.util.*;
 import com.icytower.graphics.Renderer;
+import com.icytower.enums.ParticleType;
 
-// Enum for different particle types
-enum ParticleType {
-    NORMAL,
-    SNOW,
-    SPARK,
-    DUST,
-    SMOKE
-}
 
 // Complete Particle Class
-class Particle {
+public class Particle {
     private float x, y, vx, vy;
     private Color color;
     private float life, maxLife;

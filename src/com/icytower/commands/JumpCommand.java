@@ -1,6 +1,7 @@
 package com.icytower.commands;
 import com.icytower.entities.Player;
 import com.icytower.interfaces.Command;
+import com.icytower.enums.PlayerState;
 public class JumpCommand implements Command {
     private Player player;
     
@@ -10,6 +11,7 @@ public class JumpCommand implements Command {
     
     @Override
     public void execute() {
+        player.setPlayerState(PlayerState.JUMPING);
         player.jump();
     }
     

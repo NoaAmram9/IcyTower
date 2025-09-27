@@ -12,8 +12,9 @@ public class MenuState implements GameState {
     @Override
     public void enter() {
         System.out.println("Entering Menu State");
+        InputManager.getInstance().clearBindings();
     }
-    
+        
     @Override
     public void exit() {
         System.out.println("Exiting Menu State");

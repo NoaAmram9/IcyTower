@@ -13,20 +13,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import com.icytower.interfaces.GameState;
+import com.icytower.systems.ParticleSystem;
 
 public class PlayingState implements GameState {
+
     private World world;
     private Player player;
     private Camera camera;
     
-    @Override
+        @Override
     public void enter() {
         world = new World();
-        player = new Player(400, 500);
+        player = new Player(400, 520); // Start on the first platform
         camera = new Camera();
         
-        // Bind commands
         InputManager input = InputManager.getInstance();
+        input.clearBindings();
         input.bindKey(KeyEvent.VK_SPACE, new JumpCommand(player));
         input.bindKey(KeyEvent.VK_ESCAPE, new PauseCommand());
         
@@ -39,21 +41,28 @@ public class PlayingState implements GameState {
     }
     
     @Override
-    public void update() {
-        player.update(1.0f);
-        world.update(player);
-        camera.update(player.getX(), player.getY(), 600);
-        
-        // Update score based on height
-        int newScore = Math.max(0, (int)(600 - player.getY()) / 10);
-        ScoreManager.getInstance().updateScore(newScore);
-        
-        // Check game over
-        if (player.getY() > -camera.getY() + 700) {
-            GameManager.getInstance().notifyGameOver(ScoreManager.getInstance().getCurrentScore());
-            GameManager.getInstance().setState("GAME_OVER");
-        }
+public void update() {
+    world.update(player);      
+    player.update(1.0f);      
+    camera.update(player.getX(), player.getY(), 600);
+    
+    // Update particle system
+    ParticleSystem particleSystem = ParticleSystem.getInstance();
+    particleSystem.update(1.0f);
+    particleSystem.createSnowEffect(800, 600, camera.getY());
+    particleSystem.cleanupParticles(player.getY());
+    
+    // Update score
+    int newScore = Math.max(0, (int)(600 - player.getY()) / 10);
+    ScoreManager.getInstance().updateScore(newScore);
+    
+    // Check game over
+    if (player.getY() > -camera.getY() + 700) {
+        GameManager.getInstance().notifyGameOver(ScoreManager.getInstance().getCurrentScore());
+        GameManager.getInstance().setState("GAME_OVER");
     }
+}
+
     
     @Override
     public void render(Renderer renderer) {
@@ -62,6 +71,10 @@ public class PlayingState implements GameState {
         renderer.translate(camera.getX(), camera.getY());
         world.render(renderer);
         player.render(renderer);
+        
+        // Render particle effects
+        ParticleSystem.getInstance().render(renderer);
+        
         renderer.translate(-camera.getX(), -camera.getY());
         
         // Draw UI
@@ -69,6 +82,11 @@ public class PlayingState implements GameState {
         renderer.setFont(new Font("Arial", Font.BOLD, 20));
         renderer.drawString("Score: " + ScoreManager.getInstance().getCurrentScore(), 10, 30);
         renderer.drawString("Height: " + Math.max(0, (int)(600 - player.getY()) / 10), 10, 55);
+        
+        // Debug info
+        renderer.setColor(Color.DARK_GRAY);
+        renderer.setFont(new Font("Arial", Font.PLAIN, 12));
+        renderer.drawString("Particles: " + ParticleSystem.getInstance().getParticleCount(), 10, 580);
     }
     
     @Override
